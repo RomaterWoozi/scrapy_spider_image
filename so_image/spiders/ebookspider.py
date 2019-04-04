@@ -10,7 +10,6 @@ class EbookspiderSpider(scrapy.Spider):
     start_urls = ['http://www.mzitu.com/all']
 
     def parse(self, response):
-        # self.log(response.body.decode("utf-8"))
         ebook_item = SoImageItem()
         item = {}
         data = []
@@ -29,4 +28,18 @@ class EbookspiderSpider(scrapy.Spider):
             data.append(item)
         ebook_item['data_list'] = data
         yield ebook_item
+        pass
+
+    def parse_subpage(self, response):
+
+        if ("下一页" in response.xpath(
+                "//div[@class='pagenavi']/a[last()]/span/text()").extract()[0]):
+            next_page = response.xpath("//div[@class='pagenavi']/a[last()]/@href").extract()[0]
+            image_lists = []
+            # 获取图片路径
+            for item in response.xpath("//div[@class='main-image']"):
+                image_lists.append(item.xpath("./p/img/@src"))
+            yield {'image_urls':image_lists}
+            yield scrapy.Request(next_page, callback=self.parse_subpage)
+
         pass
