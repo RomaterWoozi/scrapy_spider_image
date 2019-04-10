@@ -9,6 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 import os
+import so_image.SoImagePipeline
 
 BOT_NAME = 'so_image'
 
@@ -16,8 +17,9 @@ SPIDER_MODULES = ['so_image.spiders']
 NEWSPIDER_MODULE = 'so_image.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-# USER_AGENT = 'so_image (+http://www.yourdomain.com)'
+USER_AGENT = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_8_3) AppleWebKit/536.5 (KHTML, like Gecko) Chrome/19.0.1084.54 Safari/536.5'
 
+MEDIA_ALLOW_REDIRECTS = True
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
 
@@ -39,10 +41,12 @@ ROBOTSTXT_OBEY = False
 # TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-# DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-# }
+DEFAULT_REQUEST_HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 '
+                  '(KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en',
+}
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
@@ -65,9 +69,14 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    # 'so_image.pipelines.SoImagePipeline': 1,
-    'scrapy.pipelines.images.ImagesPipeline': 1,
-    #设置image管道
+    #z自定义图片管道
+    'so_image.pipelines.SoImagePipeline': 1,
+
+    # 'scrapy.pipelines.images.ImagesPipeline': 1,
+    # 设置image管道
+    'scrapy.pipelines.files.FilesPipeline': 2,
+    # 设置文件管道
+
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -93,3 +102,18 @@ ITEM_PIPELINES = {
 # project_dir = os.path.abspath(os.path.dirname(__file__))  # 获取当前爬虫项目的绝对路径
 # IMAGES_STORE = os.path.join(project_dir, )  # 组装新的图片路径
 IMAGES_STORE = 'downlaod_iamges'
+FILES_STORE = 'download_file'
+
+# 避免下载最近90天已经下载过的文件内容
+FILES_EXPIRES = 90
+# 避免下载最近90天已经下载过的图像内容
+IMAGES_EXPIRES = 30
+
+# 设置图片缩略图
+IMAGES_THUMBS = {
+    'small': (50, 50),
+    'big': (250, 250),
+}
+# 图片过滤器，最小高度和宽度，低于此尺寸不下载
+IMAGES_MIN_HEIGHT = 110
+IMAGES_MIN_WIDTH = 110
