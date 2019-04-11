@@ -9,7 +9,7 @@
 #     https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://doc.scrapy.org/en/latest/topics/spider-middleware.html
 import os
-import so_image.SoImagePipeline
+import so_image.soImagepipeline
 
 BOT_NAME = 'so_image'
 
@@ -29,24 +29,31 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-# DOWNLOAD_DELAY = 3
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-# COOKIES_ENABLED = False
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
 DEFAULT_REQUEST_HEADERS = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 '
-                  '(KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36',
+    # 'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 '
+    #     #               '(KHTML, like Gecko) Chrome/66.0.3359.139 Safari/537.36',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     'Accept-Language': 'en',
 }
+# DEFAULT_REQUEST_HEADERS = {
+#     'Accept': 'text/html, application/xhtml+xml, application/xml',
+#     'Accept-Language': 'zh-CN,zh;q=0.8',
+#     'Host': 'ip84.com',
+#     'Referer': 'http://ip84.com/',
+#     'X-XHR-Referer': 'http://ip84.com/'
+# }
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
@@ -56,9 +63,12 @@ DEFAULT_REQUEST_HEADERS = {
 
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
-# DOWNLOADER_MIDDLEWARES = {
-#    'so_image.middlewares.SoImageDownloaderMiddleware': 543,
-# }
+DOWNLOADER_MIDDLEWARES = {
+    # 'so_image.middlewares.SoImageDownloaderMiddleware': 543,
+    'so_image.useragent.UserAgent': 1,
+    # 'so_image.proxymiddlewares.ProxyMiddleware': 10,
+    'scrapy.downloadermiddleware.useragent.UserAgentMiddleware': None,
+}
 
 # Enable or disable extensions
 # See https://doc.scrapy.org/en/latest/topics/extensions.html
@@ -69,10 +79,11 @@ DEFAULT_REQUEST_HEADERS = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    #z自定义图片管道
-    'so_image.pipelines.SoImagePipeline': 1,
+    # z自定义图片管道
+    'so_image.soImagepipeline.SoImagePipeline': 1,
 
     # 'scrapy.pipelines.images.ImagesPipeline': 1,
+
     # 设置image管道
     'scrapy.pipelines.files.FilesPipeline': 2,
     # 设置文件管道
