@@ -87,7 +87,6 @@ ITEM_PIPELINES = {
     # 设置文件管道
     # 'scrapy.pipelines.files.FilesPipeline': 2,
 
-
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -128,3 +127,6 @@ IMAGES_THUMBS = {
 # 图片过滤器，最小高度和宽度，低于此尺寸不下载
 IMAGES_MIN_HEIGHT = 110
 IMAGES_MIN_WIDTH = 110
+
+# 设置输出文件编码格式
+FEED_EXPORT_ENCODING = 'UTF8'
