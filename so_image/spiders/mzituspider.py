@@ -4,8 +4,8 @@ import scrapy
 from so_image.items import SoImageItem
 
 
-class EbookspiderSpider(scrapy.Spider):
-    name = 'ebookspider'
+class MZiTuSpider(scrapy.Spider):
+    name = 'meizitu'
     allowed_domains = ['www.mzitu.com']
     start_urls = ['http://www.mzitu.com/all']
 
