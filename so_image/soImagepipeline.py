@@ -58,8 +58,9 @@ class SoImagePipeline(ImagesPipeline):
             for image_url in item['image_urls']:
                 index = random.randint(1, len(self.user_agent_list)) - 1
                 user_agent = self.user_agent_list[index]
+                print(item.get('referer'))
                 yield scrapy.Request(image_url,
-                                     headers={'referer': 'https://www.mzitu.com/56056/2',
+                                     headers={'referer': item.get('referer'),
                                               'user-agent': user_agent,
                                               'accept': 'image/webp,image/*,*/*;q=0.8',
                                               'accept-encoding': 'gzip, deflate, sdch, br',

@@ -22,6 +22,7 @@ class EbookspiderSpider(scrapy.Spider):
                 for ptemp in liitem.xpath("./p[@class='url']/a"):
                     pdata = {'name': ptemp.xpath("./text()").extract()[0], 'alink': ptemp.xpath("./@href").extract()[0]}
                     pList.append(pdata)
+                    yield scrapy.Request(pdata['alink'], callback=self.parse_subpage)
                 temp = {'month': liitem.xpath("./p[@class='month']/em/text()").extract()[0], 'columns': pList}
                 alink_list.append(temp)
             item['alink_list'] = alink_list
@@ -32,14 +33,13 @@ class EbookspiderSpider(scrapy.Spider):
         pass
 
     def parse_subpage(self, response):
+        image_lists = []
         if ("下一页" in response.xpath(
                 "//div[@class='pagenavi']/a[last()]/span/text()").extract()[0]):
             next_page = response.xpath("//div[@class='pagenavi']/a[last()]/@href").extract()[0]
-            image_lists = []
             # 获取图片路径
             for item in response.xpath("//div[@class='main-image']"):
-                image_lists.append(item.xpath("./p/img/@src"))
-            yield {'image_urls': image_lists}
+                image_lists.append(item.xpath("./p/a/img/@src").extract()[0])
+            yield {'image_urls': image_lists, 'referer': response.url}
             yield scrapy.Request(next_page, callback=self.parse_subpage)
-
         pass
