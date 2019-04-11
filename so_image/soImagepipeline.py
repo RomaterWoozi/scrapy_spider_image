@@ -49,21 +49,19 @@ class SoImagePipeline(ImagesPipeline):
     重写item_completed
     '''
 
-
-
     '''
      重写get_media_requests方法
     '''
 
     def get_media_requests(self, item, info):
-        for image_url in item['image_urls']:
-            index = random.randint(1, len(self.user_agent_list)) - 1
-            user_agent = self.user_agent_list[index]
-            yield scrapy.Request(image_url,
-                                 headers={'referer': 'https://www.mzitu.com/56056/2',
-                                          'user-agent': user_agent,
-                                          'accept': 'image/webp,image/*,*/*;q=0.8',
-                                          'accept-encoding': 'gzip, deflate, sdch, br',
-                                          'accept-language': 'zh-CN,zh;q=0.8,en;q=0.6', })
-
+        if item.get('image_urls'):
+            for image_url in item['image_urls']:
+                index = random.randint(1, len(self.user_agent_list)) - 1
+                user_agent = self.user_agent_list[index]
+                yield scrapy.Request(image_url,
+                                     headers={'referer': 'https://www.mzitu.com/56056/2',
+                                              'user-agent': user_agent,
+                                              'accept': 'image/webp,image/*,*/*;q=0.8',
+                                              'accept-encoding': 'gzip, deflate, sdch, br',
+                                              'accept-language': 'zh-CN,zh;q=0.8,en;q=0.6', })
         pass

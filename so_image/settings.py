@@ -81,12 +81,12 @@ DOWNLOADER_MIDDLEWARES = {
 ITEM_PIPELINES = {
     # z自定义图片管道
     'so_image.soImagepipeline.SoImagePipeline': 1,
-
+    # 设置image管道
     # 'scrapy.pipelines.images.ImagesPipeline': 1,
 
-    # 设置image管道
-    'scrapy.pipelines.files.FilesPipeline': 2,
     # 设置文件管道
+    # 'scrapy.pipelines.files.FilesPipeline': 2,
+
 
 }
 
@@ -112,8 +112,8 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 # project_dir = os.path.abspath(os.path.dirname(__file__))  # 获取当前爬虫项目的绝对路径
 # IMAGES_STORE = os.path.join(project_dir, )  # 组装新的图片路径
-IMAGES_STORE = 'downlaod_iamges'
-FILES_STORE = 'download_file'
+IMAGES_STORE = 'download_images'
+# FILES_STORE = 'download_file'
 
 # 避免下载最近90天已经下载过的文件内容
 FILES_EXPIRES = 90
@@ -122,7 +122,7 @@ IMAGES_EXPIRES = 30
 
 # 设置图片缩略图
 IMAGES_THUMBS = {
-    'small': (50, 50),
+    'small': (150, 150),
     'big': (250, 250),
 }
 # 图片过滤器，最小高度和宽度，低于此尺寸不下载

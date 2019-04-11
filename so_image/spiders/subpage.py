@@ -61,5 +61,5 @@ class SubPagespiderSpider(scrapy.Spider):
             yield {'image_urls': image_lists}
             index = random.randint(1, len(self.user_agent_list))-1
             user_agent = self.user_agent_list[index]
-            # print("************ %d **** user agent=%s" % (index, user_agent)) "User-Agent": user_agent,
-            yield scrapy.Request(next_page, headers={"Referer": "https://www.mzitu.com/56056/2"}, callback=self.parse)
+            # print("************ %d **** user agent=%s" % (index, user_agent)) ,
+            yield scrapy.Request(next_page, headers={"User-Agent": user_agent}, callback=self.parse)
